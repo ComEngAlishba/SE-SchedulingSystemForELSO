@@ -1,0 +1,185 @@
+﻿@layout LoginLayout
+@page "/Teacher_Home_Page/{Teacher_Username}"
+@using Models;
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Sceduling System for ELSO| Teacher</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
+    <!--[if lt IE 9]>
+        <script src="js/html5shiv.js"></script>
+        <script src="js/respond.min.js"></script>
+        <script src="js/lte-ie7.js"></script>
+      <![endif]-->
+    <!-- =======================================================
+      Theme Name: NiceAdmin
+      Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+      Author: BootstrapMade
+      Author URL: https://bootstrapmade.com
+    ======================================================= -->
+</head>
+
+<body>
+
+    <!-- container section start -->
+    <section id="container" class="">
+        <!--header start-->
+        <header class="header dark-heading-bg">
+
+            <!--logo start-->
+            <a href="" class="logo"><b>Scheduling System <span class="lite">ELSO</span></b></a>
+            <!--logo end-->
+
+            <div class="top-nav notification-row">
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+
+                    <!-- task notificatoin start -->
+                    <li id="task_notificatoin_bar">
+                        <a data-toggle="dropdown" href="">
+                            <div class="icon-reorder tooltips" data-original-title="Unread Emails" data-placement="bottom"><a href="/TimeTable_Page"> <img src="icons/notes.png"></a></div>
+                            <span class="badge bg-important">5</span>
+                        </a>
+                    </li>
+                    <!-- task notificatoin end -->
+                   
+                    <!-- alert notification end-->
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" href="#">
+                            <span class="profile-ava">
+                                <img alt="" src="icons/user.png"><!--profile pic from the -database if any otherwise set any defaul -->
+                            </span>
+                            <span class="username">@Teacher_Username</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li class="eborder-top">
+                                <a href="/My_Profile_Teacher_Page/@Teacher_Username"><i class="icon_profile"></i> My Profile</a>
+                            </li>
+                            <li>
+                                <a href="/"><i class="icon_key_alt"></i> Log Out</a><!--navigate to login page-->
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+        </header>
+        <!--header end-->
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar" class="nav-collapse">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu">
+                    <li class="active">
+                        <a class="" href="/Teacher_Home_Page/@Teacher_Username">
+                            <!--navigate to Home page-->
+                            <i class="icon_house_alt"></i>
+                            <span>Home Page</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Arrange_Time_Slots_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Create Meeting</span>
+
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="" href="/Send_Annoucment_Page/@Teacher_Username">
+                            <!--navigate to inbox  -->
+                            <i class="icon_piechart"></i>
+                            <span>Send Annoucments</span>
+
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="" href="/Received_Meeting_Requests/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Meeting Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/My_Meeting_Teacher_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>My Meetings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Reschedule_Meetings_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Reschedule Meetings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Cancel_Meeting_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Cancel Meetings</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="/Notification_Page/@Teacher_Username">
+                            <i><img src="icons/bell.png"></i>
+                            <span>Notification</span>
+                            <span class="badge bg-important">@notification_numbers</span><!--total number of notifications-->
+                        </a>
+                    </li>
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+
+        <div class="text-right">
+            <div class="credits">
+                <!--
+                  All the links in the footer should remain intact.
+                  You can delete the links only if you purchased the pro version.
+                  Licensing information: https://bootstrapmade.com/license/
+                  Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+                -->
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            </div>
+        </div>
+    </section>
+    <!-- container section end -->
+</body>
+
+</html>
+
+
+@code {
+    [Parameter]
+    public string Teacher_Username { get; set; }
+    public int notification_numbers { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        notification_numbers = db.NotificationTable.Where(t => t.Username == Teacher_Username).ToList().Count;
+    }
+}

@@ -1,0 +1,326 @@
+﻿@page "/Requests_Reschedule_Meetings_Page/{Admin_Username}"
+@inject NavigationManager navigationManager
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Grids
+@using System.Net.Mail;
+@using Models
+@layout LoginLayout
+@inject IToastService toastService
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Sceduling System for ELSO | Admin Meeting Requests</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+
+</head>
+
+<body style="background-color:white !important">
+
+
+    <!-- container section start -->
+    <section id="container">
+        <!--header start-->
+        <header class="header dark-heading-bg">
+            <div class="toggle-nav">
+                <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><img src="icons/task.png"></div>
+            </div>
+
+            <!--logo start-->
+            <a href="" class="logo"><b>Scheduling System <span class="lite">ELSO</span></b></a>
+            <!--logo end-->
+
+            <div class="top-nav notification-row">
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" href="#">
+                            <span class="profile-ava">
+                                <img alt="" src="icons/user.png"><!--profile pic from the -database if any otherwise set any defaul -->
+                            </span>
+                            <span class="username">@Admin_Username</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li class="eborder-top">
+                                <a href="/MyProfile/@Admin_Username"><i class="icon_profile"></i> My Profile</a>
+                            </li>
+                            <li>
+                                <a href="/"><i class="icon_key_alt"></i> Log Out</a><!--navigate to login page-->
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+        </header>
+        <!--header end-->
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar" class="nav-collapse">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu">
+                    <li>
+                        <a class="" href="/Admin_Home_Page/@Admin_Username">
+                            <!--navigate to Home page-->
+                            <i class="icon_house_alt"></i>
+                            <span>Home Page</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Recieved_Request_Admin_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Create Meeting Request</span>
+                            <span class="badge bg-important">@notification_numbers_Create</span><!--total number of notifications-->
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a class="" href="/Requests_Reschedule_Meetings_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Reschedule Meeting Requests</span>
+                            <span class="badge bg-important">@notification_numbers_Reschedule</span><!--total number of notifications-->
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Requests_Delete_Meeting_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Delete Meeting Requests</span>
+                            <span class="badge bg-important">@notification_numbers_Delete</span><!--total number of notifications-->
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/View_All_Meetings_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>All Meetings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Setting_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="page-header"><i class="fa fa-table"></i>Requests For Rescheduling Meetings</h3>
+                    </div>
+                </div>
+                <!-- page start-->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <section class="panel">
+                            <SfGrid DataSource="@meetings" AllowPaging="true" AllowSorting="true" AllowFiltering="true" AllowGrouping="true">
+                                <GridColumns>
+                                    <GridColumn Field=@nameof(RescheduleDeleteTable.MeetingId) HeaderText="Meeting Id" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="50"></GridColumn>
+                                    <GridColumn Field=@nameof(RescheduleDeleteTable.MeetingTopic) HeaderText="Meeting Topic" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                                    <GridColumn Field=@nameof(RescheduleDeleteTable.StartTime) HeaderText="Start Time" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                                    <GridColumn Field=@nameof(RescheduleDeleteTable.EndTime) HeaderText="End Time" Width="150"></GridColumn>
+                                    <GridColumn Field=@nameof(RescheduleDeleteTable.TeacherUsername) HeaderText="Teacher Name" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120"></GridColumn>
+                                    <GridColumn Field=@nameof(RescheduleDeleteTable.Reason) HeaderText="Reason" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120"></GridColumn>
+                                    <GridColumn HeaderText="Requests" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120">
+                                        <Template>
+                                            @{
+                                                var m = (context as RescheduleDeleteTable);
+                                                <a class="btn btn-success" style="color:black;font:bold;" @onclick="() => Accept_Meeting_Request(m.Id,m.MeetingId)">Accept</a>
+                                                <a class="btn btn-danger" style="color:white" @onclick="() => Delete_Meeting_Request(m.Id,m.MeetingId)">Delete</a>
+                                            }
+                                        </Template>
+                                    </GridColumn>
+                                </GridColumns>
+                            </SfGrid>
+                        </section>
+                    </div>
+                </div>
+                <!-- page end-->
+
+            </section>
+        </section>
+        <!--main content end-->
+    </section>
+    <!-- container section end -->
+</body>
+</html>
+
+@code {
+    [Parameter]
+    public string Admin_Username { get; set; }
+    public int notification_numbers_Create { get; set; } = 0;
+    public int notification_numbers_Delete { get; set; } = 0;
+    public int notification_numbers_Reschedule { get; set; } = 0;
+    List<RescheduleDeleteTable> meetings;
+    protected override async Task OnInitializedAsync()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        meetings = db.RescheduleDeleteTable.Where(t => t.RescheduleDeleteChoice == "Reschedule").ToList();
+        var notifications = db.NotificationTable.Where(n => n.Username == Admin_Username).ToList();
+        for (int i = 0; i < notifications.Count; i++)
+        {
+            if (notifications[i].NotiMessage.Contains("Creating"))
+            {
+                notification_numbers_Create++;
+            }
+            else if (notifications[i].NotiMessage.Contains("Rescheduling"))
+            {
+                notification_numbers_Reschedule++;
+            }
+            else if (notifications[i].NotiMessage.Contains("Cancelling"))
+            {
+                notification_numbers_Delete++;
+            }
+        }
+    }
+
+    void Accept_Meeting_Request(int id, int? meeting_id)
+    {
+        toastService.ShowInfo("Please wait for a few seconds.");
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        var meeting = db.TimeSlotsTable.Where(t => t.Id == meeting_id).FirstOrDefault();
+        var notifications = db.NotificationTable.Where(n => n.Username == Admin_Username).ToList();
+        for(int j=0;j<notifications.Count;j++)
+        {
+            if(notifications[j].NotiMessage.Contains(meeting.TeacherUsername) && notifications[j].NotiMessage.Contains("Rescheduling"))
+            {
+                db.Remove(notifications[j]);
+                db.SaveChanges();
+                break;
+            }
+        }
+        var students_noti = db.BookMeetingTable.Where(b => b.MeetingId == meeting_id).ToList();
+        var edit_meeting = db.RescheduleDeleteTable.Where(t => t.Id == id).FirstOrDefault();
+        for (int i = 0; i < students_noti.Count; i++)
+        {
+            NotificationTable s = new NotificationTable();
+            s.Username = students_noti[i].StudentUsername;
+            if (meeting.MeetingTopic == edit_meeting.MeetingTopic)
+            {
+                s.NotiMessage = "Your Meeting " + meeting.MeetingTopic + " has been Reschedule and Timing is " + edit_meeting.StartTime.ToString() + " to " + edit_meeting.EndTime.ToString() + " .";
+            }
+            else
+            {
+                s.NotiMessage = "Your Meeting " + meeting.MeetingTopic + " has been Reschedule and Timing is " + edit_meeting.StartTime.ToString() + " to " + edit_meeting.EndTime.ToString() + " and Meeting topic changed to " + edit_meeting.MeetingTopic + ".";
+            }
+            s.CurrentDate = DateTime.Now.ToString();
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress("schedulingelso@gmail.com");
+                mail.To.Add(students_noti[i].StudentEmail);
+                mail.Subject = "ELSO Annoucment";
+                mail.Body = s.NotiMessage;
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential("schedulingelso@gmail.com", "soft5150.");
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+            }
+            db.NotificationTable.Add(s);
+            db.SaveChanges();
+        }
+        NotificationTable n = new NotificationTable();
+        n.Username = meeting.TeacherUsername;
+        n.NotiMessage = "Your Request for Rescheduling of Meeting " + meeting.MeetingTopic + " has been Accepted.";
+        string email = db.TeacherTable.Where(t => t.Username == meeting.TeacherUsername).FirstOrDefault().Email;
+        using (MailMessage mail = new MailMessage())
+        {
+            mail.From = new MailAddress("schedulingelso@gmail.com");
+            mail.To.Add(email);
+            mail.Subject = "ELSO Annoucment";
+            mail.Body = n.NotiMessage;
+            mail.IsBodyHtml = true;
+
+            using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+            {
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new System.Net.NetworkCredential("schedulingelso@gmail.com", "soft5150.");
+                smtp.EnableSsl = true;
+                smtp.Send(mail);
+            }
+        }
+        n.CurrentDate = DateTime.Now.ToString();
+        db.NotificationTable.Add(n);
+        meeting.StartTime = edit_meeting.StartTime;
+        meeting.EndTime = edit_meeting.EndTime;
+        meeting.MeetingTopic = edit_meeting.MeetingTopic;
+        db.RescheduleDeleteTable.Remove(edit_meeting);
+        db.SaveChanges();
+        toastService.ShowSuccess("Request has been accepted successfully...");
+        OnInitializedAsync();
+    }
+    void Delete_Meeting_Request(int id, int? meeting_id)
+    {
+        toastService.ShowInfo("Please wait for a few seconds.");
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        var meeting = db.RescheduleDeleteTable.Where(t => t.Id == id).FirstOrDefault();
+        var notifications = db.NotificationTable.Where(n => n.Username == Admin_Username).ToList();
+        for (int j = 0; j < notifications.Count; j++)
+        {
+            if (notifications[j].NotiMessage.Contains(meeting.TeacherUsername) && notifications[j].NotiMessage.Contains("Rescheduling"))
+            {
+                db.Remove(notifications[j]);
+                db.SaveChanges();
+                break;
+            }
+        }
+        NotificationTable n = new NotificationTable();
+        n.Username = meeting.TeacherUsername;
+        n.NotiMessage = "Your Request for Rescheduling of Meeting " + meeting.MeetingTopic + " has been Rejected.";
+        string email = db.TeacherTable.Where(t => t.Username == meeting.TeacherUsername).FirstOrDefault().Email;
+        using (MailMessage mail = new MailMessage())
+        {
+            mail.From = new MailAddress("schedulingelso@gmail.com");
+            mail.To.Add(email);
+            mail.Subject = "ELSO Annoucment";
+            mail.Body = n.NotiMessage;
+            mail.IsBodyHtml = true;
+
+            using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+            {
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new System.Net.NetworkCredential("schedulingelso@gmail.com", "soft5150.");
+                smtp.EnableSsl = true;
+                smtp.Send(mail);
+            }
+        }
+        n.CurrentDate = DateTime.Now.ToString();
+        db.NotificationTable.Add(n);
+        db.RescheduleDeleteTable.Remove(meeting);
+        db.SaveChanges();
+        toastService.ShowSuccess("Request has been deleted successfully...");
+        OnInitializedAsync();
+    }
+}
+
+
+

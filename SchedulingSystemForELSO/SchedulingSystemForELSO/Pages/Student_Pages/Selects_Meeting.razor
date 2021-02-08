@@ -1,0 +1,166 @@
+﻿@page "/Selects_Meeting_Page/{Student_Username}"
+@inject NavigationManager navigationManager
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Grids
+@using Models
+@layout LoginLayout
+@inject IToastService toastService
+<html lang="en">
+
+<head>
+
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Basic Table | Creative - Bootstrap 3 Responsive Admin Template</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+    <title>Sceduling System for ELSO| Select Meeting </title>
+
+</head>
+
+<body>
+    <!-- container section start -->
+    <section id="container" class="">
+        <!--header start-->
+        <header class="header dark-heading-bg">
+            <div class="toggle-nav">
+                <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><img src="icons/task.png"></div>
+            </div>
+
+            <!--logo start-->
+            <a href="" class="logo"><b>Scheduling System <span class="lite">ELSO</span></b></a>
+            <!--logo end-->
+
+            <div class="top-nav notification-row">
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" href="#">
+                            <span class="profile-ava">
+                                <img alt="" src="icons/user.png"><!--profile pic from the -database if any otherwise set any defaul -->
+                            </span>
+                            <span class="username">@Student_Username</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li class="eborder-top">
+                                <a href="/My_Profile_Student_Page/@Student_Username"><i class="icon_profile"></i> My Profile</a>
+                            </li>
+                            <li>
+                                <a href="/"><i class="icon_key_alt"></i> Log Out</a><!--navigate to login page-->
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+        </header>
+        <!--header end-->
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar" class="nav-collapse">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu">
+                    <li>
+                        <a class="" href="/Student_Home_Page/@Student_Username">
+                            <!--navigate to Home page-->
+                            <i class="icon_house_alt"></i>
+                            <span>Home Page</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a class="" href="/Selects_Meeting_Page/@Student_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Select a Meeting</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="/My_Meeting_Student_Page/@Student_Username">
+                            <i class="icon_piechart"></i>
+                            <span>My Meetings</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">
+                <header>
+                    <h1 class="text-center pr-5">
+                        Select Meeting
+                    </h1>
+                </header>
+                <SfGrid DataSource="@timeslots">
+                    <GridEvents TValue="TimeSlotsTable" RowDataBound="CustomizedCell"> </GridEvents>
+                    <GridColumns>
+                        <GridColumn Field=@nameof(TimeSlotsTable.Id) HeaderText="Meeting Id" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                        <GridColumn Field=@nameof(TimeSlotsTable.MeetingTopic) HeaderText="Meeting Topic" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                        <GridColumn Field=@nameof(TimeSlotsTable.StartTime) HeaderText="Start Time" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                        <GridColumn Field=@nameof(TimeSlotsTable.EndTime) HeaderText="End Time" Width="150"></GridColumn>
+                        <GridColumn Field=@nameof(TimeSlotsTable.TeacherUsername) HeaderText="Teacher Name" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120"></GridColumn>
+                        <GridColumn HeaderText="Meetings" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120">
+                            <Template>
+                                @{
+                                    var m = (context as TimeSlotsTable);
+                                    <a class="btn btn-success" @onclick="() => View_Meeting(m.Id)">View</a>
+                                }
+                            </Template>
+                        </GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            </section>
+        </section>
+        <!--main content end-->
+    </section>
+    <!-- container section end -->
+</body>
+
+
+</html>
+@code {
+    [Parameter]
+    public string Student_Username { get; set; }
+    TimeSlotsTable m = new TimeSlotsTable();
+    List<TimeSlotsTable> timeslots;
+
+    protected override async Task OnInitializedAsync()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        timeslots = db.TimeSlotsTable.Where(t => t.Request == true).ToList();
+        for (int i = 0; i < timeslots.Count; i++)
+        {
+            timeslots[i].TeacherUsername = db.TeacherTable.Where(t => t.Username == timeslots[i].TeacherUsername).FirstOrDefault().FullName;
+        }
+    }
+
+    void View_Meeting(int id)
+    {
+        var url = "/View_Meeting/" + id.ToString() + "/" + Student_Username;
+        navigationManager.NavigateTo(url);
+    }
+    public void CustomizedCell(RowDataBoundEventArgs<TimeSlotsTable> args)
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        string color = db.TeacherTable.Where(p => p.FullName == args.Data.TeacherUsername).FirstOrDefault().Color;
+        args.Row.AddStyle(new string[] { "background-color:" + color + ";" });
+
+    }
+}
+

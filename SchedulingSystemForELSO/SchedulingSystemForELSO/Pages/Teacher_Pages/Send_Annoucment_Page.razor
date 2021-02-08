@@ -1,0 +1,249 @@
+﻿@layout LoginLayout
+@page "/Send_Annoucment_Page/{Teacher_Username}"
+@using System.Net.Mail;
+@using Models
+@inject IToastService toastService
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Sceduling System for ELSO| Send Announcement</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+
+<body style="background-image: url(../icons/img.jpg);">
+
+    <!-- container section start -->
+    <section>
+        <!--header start-->
+        <header class="header dark-heading-bg">
+            <div class="toggle-nav">
+                <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><img src="icons/task.png"></div>
+            </div>
+
+            <!--logo start-->
+            <a href="" class="logo"><b>Scheduling System <span class="lite">ELSO</span></b></a>
+            <!--logo end-->
+
+            <div class="top-nav notification-row">
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" href="#">
+                            <span class="profile-ava">
+                                <img alt="" src="icons/user.png"><!--profile pic from the -database if any otherwise set any defaul -->
+                            </span>
+                            <span class="username">@Teacher_Username</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li class="eborder-top">
+                                <a href="/My_Profile_Teacher_Page/@Teacher_Username"><i class="icon_profile"></i> My Profile</a>
+                            </li>
+                            <li>
+                                <a href="/"><i class="icon_key_alt"></i> Log Out</a><!--navigate to login page-->
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+        </header>
+        <!--header end-->
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar" class="nav-collapse">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu">
+                    <li>
+                        <a class="" href="/Teacher_Home_Page/@Teacher_Username">
+                            <!--navigate to Home page-->
+                            <i class="icon_house_alt"></i>
+                            <span>Home Page</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Arrange_Time_Slots_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Create Meeting</span>
+
+                        </a>
+
+                    </li>
+                    <li class="active">
+                        <a class="" href="/Send_Annoucment_Page/@Teacher_Username">
+                            <!--navigate to inbox  -->
+                            <i class="icon_piechart"></i>
+                            <span>Send Annoucments</span>
+
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="" href="/Received_Meeting_Requests/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Meeting Requests</span>
+
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="" href="/My_Meeting_Teacher_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>My Meetings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Reschedule_Meetings_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Reschedule Meetings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Cancel_Meeting_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Cancel Meetings</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="/Notification_Page/@Teacher_Username">
+                            <i><img src="icons/bell.png"></i>
+                            <span>Notification</span>
+                            <span class="badge bg-important">@notification_numbers</span><!--total number of notifications-->
+                        </a>
+                    </li>
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+        <div id="main-content">
+            <div class="wrap-contact100" style="margin-left:230px">
+                <div class="contact100-form-title" style="background-image: url(../icons/bg-01.jpg);">
+                    <span class="contact100-form-title-1">
+                        Send Announment
+                    </span>
+
+                </div>
+
+                <form class="contact100-form validate-form">
+                    <div class="wrap-input100">
+                        <SfDropDownList TValue="int" TItem="TimeSlotsTable" @bind-Value="@Meeting_Id" Placeholder="Select a meeting" DataSource="@meetings">
+                            <DropDownListFieldSettings Value="Id" Text="MeetingTopic"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Subject is required">
+                        <span class="label-input100">Subject:</span>
+                        <input class="input100" type="text" name="sub" placeholder="Enter subject of Email" @bind="@subject" />
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Message is required">
+                        <span class="label-input100">Message:</span>
+                        <textarea class="input100" name="message" placeholder="Your Message..." @bind="@msgbody"></textarea>
+                        <span class="focus-input100"></span>
+                    </div>
+
+                </form>
+                <button class="btn btn-dark" style="float:right; margin:20px; padding:15px" @onclick="SendMail">
+                    <span>
+                        Send
+                        <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+    </section>
+    <!-- container section end -->
+
+
+</body>
+
+</html>
+
+
+
+
+
+<span>@Message</span>
+@code{
+    [Parameter]
+    public string Teacher_Username { get; set; }
+    [Parameter]
+    public string msgbody { get; set; }
+    [Parameter]
+    public string subject { get; set; }
+    public int notification_numbers { get; set; }
+    private string Message { get; set; } = "";
+    public int Meeting_Id { get; set; }
+    List<TimeSlotsTable> meetings;
+    protected override async Task OnInitializedAsync()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        meetings = db.TimeSlotsTable.Where(t => t.TeacherUsername == Teacher_Username && t.Request==true).ToList();
+        notification_numbers = db.NotificationTable.Where(t => t.Username == Teacher_Username).ToList().Count;
+    }
+    private void SendMail()
+    {
+        try
+        {
+            SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+            var students = db.BookMeetingTable.Where(t => t.MeetingId == Meeting_Id && t.Request == true).ToList();
+            string meeting_topic = db.TimeSlotsTable.Where(t => t.Id == Meeting_Id).FirstOrDefault().MeetingTopic;
+            var teacher = db.TeacherTable.Where(r => r.Username == Teacher_Username).FirstOrDefault();
+            for (int i = 0; i < students.Count; i++)
+            {
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress("schedulingelso@gmail.com");
+                    mail.To.Add(students[i].StudentEmail);
+                    mail.Subject = subject;
+                    mail.Body = "From Teacher: " + teacher.FullName+ "<br />Teacher Email: " + teacher.Email+ "<br />Meeting Topic: " + meeting_topic + "<br />Annoucment: " + msgbody;
+                    mail.IsBodyHtml = true;
+
+                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                    {
+                        smtp.UseDefaultCredentials = false;
+                        smtp.Credentials = new System.Net.NetworkCredential("schedulingelso@gmail.com", "soft5150.");
+                        smtp.EnableSsl = true;
+                        smtp.Send(mail);
+                    }
+                }
+            }
+            toastService.ShowSuccess("Annoucment is sent to all student of your meeting successfully.");
+        }
+        catch (Exception ex)
+        {
+            toastService.ShowError(ex.Message);
+        }
+    }
+}
+
+

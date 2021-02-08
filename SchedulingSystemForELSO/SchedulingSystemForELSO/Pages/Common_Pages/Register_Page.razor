@@ -1,0 +1,136 @@
+﻿@layout LoginLayout
+@page "/Register_Page"
+@using Models;
+@using System;
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- Font-->
+    <link rel="stylesheet" type="text/css" href="css/montserrat-font.css">
+    <link rel="stylesheet" type="text/css" href="fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+    <!-- Main Style Css -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>Sceduling System for ELSO| Register</title>
+</head>
+<body class="form-v10">
+  
+    <div class="page-content">
+        <div class="form-v10-content">
+            <form class="form-detail" action="#" method="post" id="myform">
+                <div class="form-left">
+                    <h2 style="text-align: center;"><b>Sign Up</b></h2>
+                    <div class="form-row">
+                        <span class="select-btn">
+                            <i class="zmdi zmdi-chevron-down"></i>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-row form-row-1">
+                            <input type="text" name="first_name" @bind="@First_Name" id="first_name" class="input-text" placeholder="First Name" required>
+                        </div>
+                        <div class="form-row form-row-2">
+                            <input type="text" name="last_name" @bind="@Last_Name" id="last_name" class="input-text" placeholder="Last Name" required>
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <select name="Department Name" @bind="@new_user.DepName">
+                            <option class="option" value="Select Department">Select a Department</option>
+                            <option class="option" value="Computer Engineering">Computer Engineering</option>
+                            <option class="option" value="Mechnical Engineering">Mechnical Engineering</option>
+                            <option class="option" value="Electrical Engineering">Electrical Engineering</option>
+                            <option class="option" value="Civil Engineering">Civil Engineering</option>
+                            <option class="option" value="Transporation Engineering">Transporation Engineering</option>
+                            <option class="option" value="Automotive Engineering">Automotive Engineering</option>
+
+                        </select>
+                        <span class="select-btn">
+                            <i class="zmdi zmdi-chevron-down"></i>
+                        </span>
+                    </div>
+                    <div class="form-row">
+
+                        <input type="text" name="Reg_No" @bind="@new_user.RegNo" class="business" id="business" placeholder="Registeration Number" required>
+
+                    </div>
+                    <div class="form-row">
+                        <div name="Email Address">
+                            <input type="text" name="Email Address" @bind="@new_user.Email" placeholder="Email Address" required />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <select name="country" @bind="@new_user.Country">
+                            <option value="country">Country</option>
+                            <option value="Pakistan">Pakistan</option>
+                            <option value="USA">USA</option>
+                            <option value="Vietnam">Vietnam</option>
+                            <option value="Malaysia">Malaysia</option>
+                            <option value="India">India</option>
+                        </select>
+                        <span class="select-btn">
+                            <i class="zmdi zmdi-chevron-down"></i>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-row form-row-1">
+                            <input type="text" name="code" @bind="@new_user.ContactNumber" class="code" id="code" placeholder="Phone number" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <input type="text" name="username" id="username" @bind="@new_user.Username" class="input-text" required placeholder="Your Email">
+                    </div>
+
+                    <div class="form-row">
+                        <div name="Password">
+                            <input type="Password" name="Password" @bind="@new_user.Password" placeholder="Password" required />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <button type="button" class="register" @onclick="() => Signup()">&nbsp;Sign up&nbsp;&nbsp;&nbsp;</button>
+                        <button type="button" class="register" @onclick="() => Cancel()">&nbsp;Cancel&nbsp;&nbsp;&nbsp;</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
+
+@code {
+    [Parameter]
+    public string First_Name { get; set; }
+    [Parameter]
+    public string Last_Name { get; set; }
+
+    RegisterTable new_user = new RegisterTable();
+    LoginTable log_user = new LoginTable();
+    protected async Task Signup()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        new_user.FullName = First_Name + " " + Last_Name;
+        new_user.UserChoice = "Student";
+        new_user.Password = EncryptionDecryption.Encrypt(new_user.Password);
+        log_user.UserChoice = new_user.UserChoice;
+        log_user.Username = new_user.Username;
+        log_user.Password = new_user.Password;
+        db.LoginTable.Add(log_user);
+        db.RegisterTable.Add(new_user);
+        db.SaveChanges();
+        navigationManager.NavigateTo("/Student_Home_Page/" + new_user.Username);
+
+    }
+    protected async Task Cancel()
+    {
+        navigationManager.NavigateTo("/Login_Page");
+    }
+
+
+}

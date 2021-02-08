@@ -1,0 +1,231 @@
+﻿@layout LoginLayout
+@page "/Delete_Student_Page/{Admin_Username}"
+@using Models;
+@inject IToastService toastService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Sceduling System for ELSO| Admin Home Page</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+
+<body>
+
+    <!-- container section start -->
+    <section id="container" class="">
+        <!--header start-->
+        <header class="header dark-heading-bg">
+            <div class="toggle-nav">
+                <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><img src="icons/task.png"></div>
+            </div>
+
+            <!--logo start-->
+            <a href="" class="logo"><b>Scheduling System <span class="lite">ELSO</span></b></a>
+            <!--logo end-->
+
+            <div class="top-nav notification-row">
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+
+                    <!-- alert notification start-->
+                    <li id="alert_notificatoin_bar">
+                        <a data-toggle="dropdown" href="">
+
+                            <div class="icon-reorder tooltips" data-original-title="Notifications" data-placement="bottom"><a href="/Notification_Page"><img src="icons/bell.png"></a></div>
+                            <span class="badge bg-important">7</span><!--total number of notifications-->
+                        </a>
+                    </li>
+                    <!-- alert notification end-->
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" href="#">
+                            <span class="profile-ava">
+                                <img alt="" src="icons/user.png"><!--profile pic from the -database if any otherwise set any defaul -->
+                            </span>
+                            <span class="username">@Admin_Username</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li class="eborder-top">
+                                <a href="/MyProfile/@Admin_Username"><i class="icon_profile"></i> My Profile</a>
+                            </li>
+                            <li>
+                                <a href="/"><i class="icon_key_alt"></i> Log Out</a><!--navigate to login page-->
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+        </header>
+        <!--header end-->
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar" class="nav-collapse">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu">
+                    <li>
+                        <a class="" href="/Admin_Home_Page/@Admin_Username">
+                            <!--navigate to Home page-->
+                            <i class="icon_house_alt"></i>
+                            <span>Home Page</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Recieved_Request_Admin_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Create Meeting Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Requests_Reschedule_Meetings_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Reschedule Meeting Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Requests_Delete_Meeting_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Delete Meeting Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/View_All_Meetings_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>All Meetings</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <section id="main-content" style="top:450px">
+
+            <div class="wrap-contact100" style="margin-left:230px; background-image: linear-gradient(to bottom right, #2a3132, #688a7e, #ffffff)">
+                <div class="contact100-form-title" style="background-image: url(../icons/bg-01.jpg);">
+                    <span class="contact100-form-title-1">
+                        Remove Student
+                    </span>
+
+                </div>
+
+                <form class="contact100-form validate-form">
+                    <div class="wrap-input100 validate-input" data-validate="Message is required">
+                        <SfDropDownList TValue="int" TItem="RegisterTable" @bind-Value="@Student_Id" Placeholder="Select a Student" DataSource="@students">
+                            <DropDownListFieldSettings Value="Id" Text="FullName"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                        
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-dark" @onclick="() => Show()">&nbsp;Show&nbsp;&nbsp;&nbsp;</button>
+                    </div>
+                    <div class="wrap-input100 validate-input" data-validate="Message is required">
+                        <span class="label-input100">Full Name:</span>
+                        <input class="input100" type="text" name="first_name" @bind="@new_user.FullName" id="first_name" placeholder="Full Name" required>
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Message is required">
+                        <span class="label-input100">Email:</span>
+                        <input type="text" name="Email Address" @bind="@new_user.Email" class="input100" placeholder="Email Address" required />
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Message is required">
+                        <span class="label-input100">Phone Number:</span>
+                        <input type="text" name="phone" @bind="@new_user.ContactNumber" class="input100" id="phone" placeholder="Phone Number" required>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Message is required">
+                        <span class="label-input100">Username:</span>
+                        <input type="text" name="username" id="username" @bind="@new_user.Username" class="input100" required placeholder="Useername">
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Message is required">
+                        <span class="label-input100">Password:</span>
+                        <input type="Password" name="Password" @bind="@new_user.Password" placeholder="Password" required />
+                    </div>
+
+                    <div>
+                        <button type="button" class="btn btn-dark" @onclick="() => Delete()">&nbsp;Delete&nbsp;&nbsp;&nbsp;</button>
+                        <button type="button" class="btn btn-dark" @onclick="() => Cancel()">&nbsp;Cancel&nbsp;&nbsp;&nbsp;</button>
+                    </div>
+
+
+                </form>
+            </div>
+        </section>
+    
+
+        <!--sidebar end-->
+    </section>
+    <!-- container section end -->
+</body>
+
+</html>
+
+
+@code {
+    [Parameter]
+    public string Admin_Username { get; set; }
+    RegisterTable new_user = new RegisterTable();
+    public int Student_Id { get; set; }
+    List<RegisterTable> students;
+    protected override async Task OnInitializedAsync()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        students = db.RegisterTable.ToList();
+    }
+    public void Show()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        new_user = db.RegisterTable.Where(a => a.Id == Student_Id && a.UserChoice=="Student").FirstOrDefault();
+    }
+    protected async Task Delete()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        var log_user = db.LoginTable.Where(l => l.Username == new_user.Username).FirstOrDefault();        
+        var students = db.BookMeetingTable.Where(b => b.StudentUsername == new_user.Username).ToList();
+        for (int j = 0; j < students.Count; j++)
+        {
+            db.BookMeetingTable.Remove(students[j]);
+        }
+        db.LoginTable.Remove(log_user);
+        db.RegisterTable.Remove(new_user);
+        db.SaveChanges();
+        toastService.ShowSuccess("Student has been deleted successfully.");
+        navigationManager.NavigateTo("/Setting_Page/" + Admin_Username);
+    }
+    protected async Task Cancel()
+    {
+        navigationManager.NavigateTo("/Setting_Page/" + Admin_Username);
+    }
+}
+
+
+
+

@@ -1,0 +1,201 @@
+﻿
+@page "/View_Students_in_a_Meeting_Page/{Meeting_Id}/{Admin_Username}"
+@inject NavigationManager navigationManager
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Grids
+@using Models
+@layout LoginLayout
+@inject IToastService toastService
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Sceduling System for ELSO | Admin Meeting Requests</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+    <!-- container section start -->
+    <section id="container" class="">
+        <!--header start-->
+        <header class="header dark-heading-bg">
+            <div class="toggle-nav">
+                <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><img src="icons/task.png"></div>
+            </div>
+
+            <!--logo start-->
+            <a href="" class="logo"><b>Scheduling System <span class="lite">ELSO</span></b></a>
+            <!--logo end-->
+
+            <div class="top-nav notification-row">
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" href="#">
+                            <span class="profile-ava">
+                                <img alt="" src="icons/user.png"><!--profile pic from the -database if any otherwise set any defaul -->
+                            </span>
+                            <span class="username">@Admin_Username</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li class="eborder-top">
+                                <a href="/MyProfile/@Admin_Username"><i class="icon_profile"></i> My Profile</a>
+                            </li>
+                            <li>
+                                <a href="/"><i class="icon_key_alt"></i> Log Out</a><!--navigate to login page-->
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+        </header>
+        <!--header end-->
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar" class="nav-collapse">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu">
+                    <li>
+                        <a class="" href="/Admin_Home_Page/@Admin_Username">
+                            <!--navigate to Home page-->
+                            <i class="icon_house_alt"></i>
+                            <span>Home Page</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Recieved_Request_Admin_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Create Meeting Request</span>
+                            <span class="badge bg-important">@notification_numbers_Create</span><!--total number of notifications-->
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Requests_Reschedule_Meetings_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Reschedule Meeting Requests</span>
+                            <span class="badge bg-important">@notification_numbers_Reschedule</span><!--total number of notifications-->
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Requests_Delete_Meeting_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Delete Meeting Requests</span>
+                            <span class="badge bg-important">@notification_numbers_Delete</span><!--total number of notifications-->
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a class="" href="/View_All_Meetings_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>All Meetings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Setting_Page/@Admin_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="page-header"><i class="fa fa-table"></i> Topic: @meeting.MeetingTopic</h3>
+                    </div>
+                </div>
+                <!-- page start-->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <section class="panel">
+                            <SfGrid DataSource="@students" AllowPaging="true" AllowSorting="true" AllowFiltering="true" AllowGrouping="true">
+                                <GridColumns>
+                                    <GridColumn Field=@nameof(BookMeetingTable.MeetingId) HeaderText="Meeting Id" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                                    <GridColumn Field=@nameof(BookMeetingTable.StudentUsername) HeaderText="Name" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                                    <GridColumn Field=@nameof(BookMeetingTable.StudentEmail) HeaderText="Email" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                                    <GridColumn Field=@nameof(BookMeetingTable.StudentRegisteration) HeaderText="Registeration #" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                                </GridColumns>
+                            </SfGrid>
+                        </section>
+                    </div>
+                </div>
+                <!-- page end-->
+
+            </section>
+        </section>        <!--main content end-->
+
+
+
+    </section>
+    <!-- container section end -->
+</body>
+</html>
+@code {
+    [Parameter]
+    public string Admin_Username { get; set; }
+    [Parameter]
+    public string Meeting_Id { get; set; }
+    List<BookMeetingTable> students;
+    public int notification_numbers_Create { get; set; } = 0;
+    public int notification_numbers_Delete { get; set; } = 0;
+    public int notification_numbers_Reschedule { get; set; } = 0;
+
+    TimeSlotsTable meeting = new TimeSlotsTable();
+    protected override async Task OnInitializedAsync()
+    {
+        int meeting_Id = Convert.ToInt32(Meeting_Id);
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        meeting = db.TimeSlotsTable.Where(m => m.Id == meeting_Id).FirstOrDefault();
+        students = db.BookMeetingTable.Where(t => t.MeetingId == meeting_Id && t.Request == true).ToList();
+        for (int i = 0; i < students.Count; i++)
+        {
+            students[i].StudentUsername = db.RegisterTable.Where(r => r.Username == students[i].StudentUsername).FirstOrDefault().FullName;
+        }
+        var notifications = db.NotificationTable.Where(n => n.Username == Admin_Username).ToList();
+        for (int i = 0; i < notifications.Count; i++)
+        {
+            if (notifications[i].NotiMessage.Contains("Creating"))
+            {
+                notification_numbers_Create++;
+            }
+            else if (notifications[i].NotiMessage.Contains("Rescheduling"))
+            {
+                notification_numbers_Reschedule++;
+            }
+            else if (notifications[i].NotiMessage.Contains("Cancelling"))
+            {
+                notification_numbers_Delete++;
+            }
+        }
+    }
+
+}

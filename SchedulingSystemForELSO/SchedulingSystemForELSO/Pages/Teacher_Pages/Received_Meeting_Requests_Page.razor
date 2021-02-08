@@ -1,0 +1,314 @@
+﻿@page "/Received_Meeting_Requests/{Teacher_Username}"
+@inject NavigationManager navigationManager
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Grids
+@using System.Net.Mail;
+@using Models
+@layout LoginLayout
+@inject IToastService toastService
+
+<html lang="en">
+
+<head>
+
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Scheduling System ELSO| Received Meeting Requests</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <!-- container section start -->
+    <section id="container" class="">
+        <!--header start-->
+        <header class="header dark-heading-bg">
+            <div class="toggle-nav">
+                <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><img src="icons/task.png"></div>
+            </div>
+
+            <!--logo start-->
+            <a href="" class="logo"><b>Scheduling System <span class="lite">ELSO</span></b></a>
+            <!--logo end-->
+
+            <div class="top-nav notification-row">
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" href="#">
+                            <span class="profile-ava">
+                                <img alt="" src="icons/user.png"><!--profile pic from the -database if any otherwise set any defaul -->
+                            </span>
+                            <span class="username">@Teacher_Username</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li class="eborder-top">
+                                <a href="/My_Profile_Teacher_Page/@Teacher_Username"><i class="icon_profile"></i> My Profile</a>
+                            </li>
+                            <li>
+                                <a href="/"><i class="icon_key_alt"></i> Log Out</a><!--navigate to login page-->
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+        </header>
+        <!--header end-->
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar" class="nav-collapse">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu">
+                    <li>
+                        <a class="" href="/Teacher_Home_Page/@Teacher_Username">
+                            <!--navigate to Home page-->
+                            <i class="icon_house_alt"></i>
+                            <span>Home Page</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Arrange_Time_Slots_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Create Meeting</span>
+
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="" href="/Send_Annoucment_Page/@Teacher_Username">
+                            <!--navigate to inbox  -->
+                            <i class="icon_piechart"></i>
+                            <span>Send Annoucments</span>
+
+                        </a>
+
+                    </li>
+                    <li class="active">
+                        <a class="" href="/Received_Meeting_Requests/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Meeting Requests</span>
+
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="" href="/My_Meeting_Teacher_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>My Meetings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Reschedule_Meetings_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Reschedule Meetings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Cancel_Meeting_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Cancel Meetings</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="/Notification_Page/@Teacher_Username">
+                            <i><img src="icons/bell.png"></i>
+                            <span>Notification</span>
+                            <span class="badge bg-important">@notification_numbers</span><!--total number of notifications-->
+                        </a>
+                    </li>
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="page-header"><i class="fa fa-table"></i> Meeting Requests</h3>
+                    </div>
+                </div>
+                <!-- page start-->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <section class="panel">
+                            <SfDropDownList TValue="int" TItem="TimeSlotsTable" @bind-Value="@Meeting_Id" Placeholder="Select a meeting" DataSource="@meetings">
+                                <DropDownListFieldSettings Value="Id" Text="MeetingTopic"></DropDownListFieldSettings>
+                            </SfDropDownList>
+                            <br />
+                            <br />
+                            <a class="btn btn-success centered" @onclick="() => Show_Meeting_Request()">Show</a>
+                            <br />
+                            <br />
+                            <SfGrid DataSource="@students" AllowPaging="true" AllowSorting="true" AllowFiltering="true" AllowGrouping="true">
+                                <GridColumns>
+                                    <GridColumn Field=@nameof(BookMeetingTable.MeetingId) HeaderText="Meeting Id" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                                    <GridColumn Field=@nameof(BookMeetingTable.StudentUsername) HeaderText="Name" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                                    <GridColumn Field=@nameof(BookMeetingTable.StudentEmail) HeaderText="Email" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                                    <GridColumn Field=@nameof(BookMeetingTable.StudentRegisteration) HeaderText="Registeration #" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                                    <GridColumn HeaderText="Requests" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120">
+                                        <Template>
+                                            @{
+                                                var m = (context as BookMeetingTable);
+                                                <a class="btn btn-success" style="color:black;font:bold;" @onclick="() => Accept_Meeting_Request(m.Id)">Accept</a>
+                                                <a class="btn btn-danger" style="color:white" @onclick="() => Delete_Meeting_Request(m.Id)">Delete</a>
+                                            }
+                                        </Template>
+                                    </GridColumn>
+                                </GridColumns>
+                            </SfGrid>
+                        </section>
+                    </div>
+                </div>
+                <!-- page end-->
+
+            </section>
+        </section>
+        <!--main content end-->
+
+
+
+    </section>
+    <!-- container section end -->
+
+
+
+
+
+
+
+
+</body>
+
+
+</html>
+@code {
+    [Parameter]
+    public string Teacher_Username { get; set; }
+    [Parameter]
+    public int Meeting_Id { get; set; }
+    [Parameter]
+    public string msgbody { get; set; }
+    [Parameter]
+    public string subject { get; set; }
+    public int notification_numbers { get; set; }
+    private string Message { get; set; } = "";
+    List<TimeSlotsTable> meetings;
+    List<BookMeetingTable> students;
+    protected override async Task OnInitializedAsync()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        meetings = db.TimeSlotsTable.Where(t => t.TeacherUsername == Teacher_Username).ToList();
+        notification_numbers = db.NotificationTable.Where(t => t.Username == Teacher_Username).ToList().Count;
+    }
+    void Show_Meeting_Request()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        students = db.BookMeetingTable.Where(t => t.MeetingId == Meeting_Id && t.Request == false).ToList();
+        for (int i = 0; i < students.Count; i++)
+        {
+            students[i].StudentUsername = db.RegisterTable.Where(r => r.Username == students[i].StudentUsername).FirstOrDefault().FullName;
+        }
+    }
+    void Accept_Meeting_Request(int id)
+    {
+        toastService.ShowInfo("Please wait for a few seconds.");
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        NotificationTable n = new NotificationTable();
+        var student = db.BookMeetingTable.Where(t => t.Id == id).FirstOrDefault();
+        var meetingTopic = db.TimeSlotsTable.Where(t => t.Id == Meeting_Id).FirstOrDefault().MeetingTopic;
+        try
+        {
+            var teacher = db.TeacherTable.Where(r => r.Username == Teacher_Username).FirstOrDefault();
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress("schedulingelso@gmail.com");
+                mail.To.Add(student.StudentEmail);
+                mail.Subject = "ELSO Annoucment";
+                mail.Body =  " Your Request for Meeting " + meetingTopic + " has been accepted successfully...";
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential("schedulingelso@gmail.com", "soft5150.");
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+
+            }
+        }
+        catch (Exception ex)
+        {
+            toastService.ShowError(ex.Message);
+        }
+        n.Username = student.StudentUsername;
+        n.NotiMessage = "Your Request for Meeting " + meetingTopic + " has been accepted successfully...";
+        n.CurrentDate = DateTime.Now.ToString();
+        db.NotificationTable.Add(n);
+        student.Request = true;
+        db.SaveChanges();
+        toastService.ShowSuccess("Request has been accepted successfully...");
+        Show_Meeting_Request();
+    }
+    void Delete_Meeting_Request(int id)
+    {
+        toastService.ShowInfo("Please wait for a few seconds.");
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        NotificationTable n = new NotificationTable();
+        var student = db.BookMeetingTable.Where(t => t.Id == id).FirstOrDefault();
+        var meetingTopic = db.TimeSlotsTable.Where(t => t.Id == Meeting_Id).FirstOrDefault().MeetingTopic;
+        try
+        {
+            var teacher = db.TeacherTable.Where(r => r.Username == Teacher_Username).FirstOrDefault();
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress("schedulingelso@gmail.com");
+                mail.To.Add(student.StudentEmail);
+                mail.Subject = "ELSO Annoucment";
+                mail.Body = " Your Request for Meeting " + meetingTopic + " has been rejected.";
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential("schedulingelso@gmail.com", "soft5150.");
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+
+            }
+        }
+        catch (Exception ex)
+        {
+            toastService.ShowError(ex.Message);
+        }
+
+        n.Username = student.StudentUsername;
+        n.NotiMessage = "Your Request for Meeting " + meetingTopic + " has been Deleted...";
+        n.CurrentDate = DateTime.Now.ToString();
+        db.NotificationTable.Add(n);
+        db.BookMeetingTable.Remove(student);
+        db.SaveChanges();
+        toastService.ShowSuccess("Request has been deleted successfully...");
+        Show_Meeting_Request();
+    }
+}

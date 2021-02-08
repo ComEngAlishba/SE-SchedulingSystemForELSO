@@ -1,0 +1,259 @@
+﻿@page "/Arrange_Time_Slots_Page/{Teacher_Username}"
+@inject NavigationManager navigationManager
+@using Syncfusion.Blazor.DropDowns
+@using Models
+@layout LoginLayout
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Inputs
+@inject IToastService toastService
+    
+<html lang="en">
+
+<head>
+
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Scheduling System ELSO| Arrange Time Slots</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+
+
+</head>
+
+<body>
+    <!-- container section start -->
+    <section id="container" class="">
+        <!--header start-->
+        <header class="header dark-heading-bg">
+            <div class="toggle-nav">
+                <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><img src="icons/task.png"></div>
+            </div>
+
+            <!--logo start-->
+            <a href="" class="logo"><b>Scheduling System <span class="lite">ELSO</span></b></a>
+            <!--logo end-->
+
+            <div class="top-nav notification-row">
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" href="#">
+                            <span class="profile-ava">
+                                <img alt="" src="icons/user.png"><!--profile pic from the -database if any otherwise set any defaul -->
+                            </span>
+                            <span class="username">@Teacher_Username</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li class="eborder-top">
+                                <a href="/My_Profile_Teacher_Page/@Teacher_Username"><i class="icon_profile"></i> My Profile</a>
+                            </li>
+                            <li>
+                                <a href="/"><i class="icon_key_alt"></i> Log Out</a><!--navigate to login page-->
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+        </header>
+        <!--header end-->
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar" class="nav-collapse">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu">
+                    <li>
+                        <a class="" href="/Teacher_Home_Page/@Teacher_Username">
+                            <!--navigate to Home page-->
+                            <i class="icon_house_alt"></i>
+                            <span>Home Page</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a class="" href="/Arrange_Time_Slots_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Create Meeting</span>
+
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="" href="/Send_Annoucment_Page/@Teacher_Username">
+                            <!--navigate to inbox  -->
+                            <i class="icon_piechart"></i>
+                            <span>Send Annoucments</span>
+
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="" href="/Received_Meeting_Requests/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Meeting Requests</span>
+
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="" href="/My_Meeting_Teacher_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>My Meetings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Reschedule_Meetings_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Reschedule Meetings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Cancel_Meeting_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Cancel Meetings</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="/Notification_Page/@Teacher_Username">
+                            <i><img src="icons/bell.png"></i>
+                            <span>Notification</span>
+                            <span class="badge bg-important">@notification_numbers</span><!--total number of notifications-->
+                        </a>
+                    </li>
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+        <!--main content start-->
+        <section id="main-content">
+            
+               <div><img src="../icons/im.jpg" style="margin-top:100px; right:50%;top:50%; width:350px; height:430px; position:absolute"  />
+            </div>
+            
+            <div class="loginBox">
+
+                <h2>Create Meeting</h2>
+                <form>
+                                                    
+                       <p>Start Time:</p>
+                        <div>
+                            <SfDateTimePicker TValue="DateTime" @bind-Value="@new_time_slot.StartTime" @onselectionchange="StateHasChanged" @onclick="() => StateHasChanged()" Placeholder='Select a date and time'>
+                            </SfDateTimePicker>
+                        </div>
+                        <p> End Time:</p>
+                        <div>
+                            <SfDateTimePicker TValue="DateTime" @bind-Value="@new_time_slot.EndTime" @onselectionchange="StateHasChanged" @onclick="() => StateHasChanged()" Placeholder='Select a date and time'>
+                            </SfDateTimePicker>
+                        </div>
+                        <p>Meeting Topic:</p>
+                        <div>
+                            <SfTextBox TValue="string" @bind-Value="@new_time_slot.MeetingTopic" Placeholder='Write a Topic'></SfTextBox>
+                        </div>
+                         <div>
+                             <button type="button" class="btn btn-success mt-1" @onclick="() => Add_Meeting()">Send Request</button>
+                         </div>
+           
+
+            </form>
+            </div>
+        </section>
+<!--main content end-->
+        </section>
+<!-- container section end -->
+    </body>
+
+
+</html>
+@code {
+    [Parameter]
+    public string Teacher_Username { get; set; }
+    TimeSlotsTable new_time_slot = new TimeSlotsTable();
+    public int notification_numbers { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        notification_numbers = db.NotificationTable.Where(t => t.Username == Teacher_Username).ToList().Count;
+        new_time_slot.StartTime = DateTime.Now;
+        new_time_slot.EndTime = DateTime.Now;
+    }
+    protected async Task Add_Meeting()
+    {
+
+        if (new_time_slot.StartTime > DateTime.Now)
+        {
+            if (new_time_slot.StartTime.DayOfWeek.ToString() == "Monday" || new_time_slot.StartTime.DayOfWeek.ToString() == "Tuesday" || new_time_slot.StartTime.DayOfWeek.ToString() == "Wednesday" || new_time_slot.StartTime.DayOfWeek.ToString() == "Thursday" || new_time_slot.StartTime.DayOfWeek.ToString() == "Friday")
+            {
+                if (new_time_slot.StartTime.Date == new_time_slot.EndTime.Date)
+                {
+
+                    new_time_slot.StartTime = Convert.ToDateTime(new_time_slot.StartTime.ToString("MM/dd/yyyy HH:mm:ss tt"));//24 hours format
+                    new_time_slot.EndTime = Convert.ToDateTime(new_time_slot.EndTime.ToString("MM/dd/yyyy HH:mm:ss tt"));//24 hours format
+                    if (new_time_slot.StartTime.Hour >= 8 && new_time_slot.StartTime.Hour <= 16)
+                    {
+                        if (new_time_slot.EndTime.Hour >= 8 && new_time_slot.EndTime.Hour <= 16)
+                        {
+                            new_time_slot.StartTime = Convert.ToDateTime(new_time_slot.StartTime.ToString("MM/dd/yyyy hh:mm:ss tt"));//12 hours format
+                            new_time_slot.EndTime = Convert.ToDateTime(new_time_slot.EndTime.ToString("MM/dd/yyyy hh:mm:ss tt"));//12 hours format
+                            if (new_time_slot.StartTime < new_time_slot.EndTime)
+                            {
+                                SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+                                NotificationTable n = new NotificationTable();
+                                n.Username = "Admin";
+                                n.NotiMessage = "You have a  Request for Creating a Meeting " + new_time_slot.MeetingTopic + " from teacher : " + Teacher_Username + " .";
+                                db.NotificationTable.Add(n);
+                                new_time_slot.TeacherUsername = Teacher_Username;
+                                new_time_slot.Request = false;
+                                db.TimeSlotsTable.Add(new_time_slot);
+                                db.SaveChanges();
+                                toastService.ShowSuccess("Your Request has been Sent Successfully");
+                                navigationManager.NavigateTo("/Teacher_Home_Page/" + Teacher_Username);
+                            }
+                            else
+                            {
+                                toastService.ShowError("Start Time must be less than End time...");
+                            }
+                        }
+                        else
+                        {
+                            toastService.ShowError("End Time must be in between 8 am  and 4 pm ....");
+                        }
+                    }
+                    else
+                    {
+                        toastService.ShowError("Start Time must be in between 8 am  and 4 pm....");
+                    }
+
+                }
+                else
+                {
+                    toastService.ShowError("Date of start and end time must be equal...");
+                }
+            }
+            else
+            {
+                toastService.ShowError("The day must be in between the Monday and Friday....");
+            }
+        }
+        else
+        {
+            toastService.ShowError("Date must be greater than the Current Time...");
+        }
+    }
+
+
+}

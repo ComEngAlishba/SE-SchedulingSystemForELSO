@@ -1,0 +1,87 @@
+﻿@layout LoginLayout
+@page "/My_Profile_Student_Page/{Username}"
+@using Models;
+@inject NavigationManager navigationManager
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- Font-->
+    <link rel="stylesheet" type="text/css" href="css/montserrat-font.css">
+    <link rel="stylesheet" type="text/css" href="fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+    <!-- Main Style Css -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>Sceduling System for ELSO| My Profile</title>
+</head>
+<body class="form-v10">
+    <span><button style="float:left " type="button" class="btn  btn-lg  btn-dark" @onclick="() => Back()">&nbsp;Back &nbsp;&nbsp;&nbsp;</button> </span><span><h2 style="color:white; text-align:center">My Profile</h2></span>
+    <img src="../icons/images.jpg" style="width:400px; height:200px; margin-top:30px; display:block; margin-left:auto; margin-right:auto" />
+    <div class="page-content">
+
+        <form class="bl" action="#" method="post" id="myform">
+
+            <div class="form-left">
+                <div class="block">
+                    <label> Full Name:</label>
+                    <input type="text" readonly="readonly" @bind="@view_user.FullName" placeholder="First Name" required>
+                </div>
+
+                <div class="block">
+                    <label>Registration Number:</label>
+                    <input type="text" readonly="readonly" name="Reg_No" @bind="@view_user.RegNo" placeholder="Reg No" required />
+                </div>
+
+
+                <div name="Email Address:" class="block">
+                    <label>Email:</label>
+                    <input type="text" readonly="readonly" size="20" name="Email Address" @bind="@view_user.Email" placeholder="Email Address" required />
+
+                </div>
+                <div class="block">
+                    <label>Contact:</label>
+                    <input type="text" readonly="readonly" name="phone" @bind="@view_user.ContactNumber" class="phone" id="phone" placeholder="Phone Number" required>
+                </div>
+                <div class="block">
+                    <label>Username:</label>
+                    <input type="text" readonly="readonly" name="username" id="username" @bind="@view_user.Username" class="input-text" required placeholder="Your Email">
+                </div>
+
+
+                <div name="Password" class="block">
+                    <label>Password:</label>
+                    <input type="text" readonly="readonly" name="Password" @bind="@view_user.Password" placeholder="Password" required />
+                </div>
+            </div>
+            <br>
+            &nbsp;
+            &nbsp;
+
+            <a style="float:right " type="button" class="btn  btn-lg  btn-dark" href="/Edit_Student_Page/@Username">Edit Profile</a>
+
+        </form>
+    </div>
+
+
+
+
+</body>
+</html>
+
+@code {
+    [Parameter]
+    public string Username { get; set; }
+    RegisterTable view_user = new RegisterTable();
+    protected override async Task OnInitializedAsync()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        view_user = db.RegisterTable.Where(p => p.Username == Username).FirstOrDefault();
+        view_user.Password = EncryptionDecryption.Decrypt(view_user.Password);
+    }
+    void Back()
+    {   
+            navigationManager.NavigateTo("/Student_Home_Page/" + view_user.Username);
+    }
+}

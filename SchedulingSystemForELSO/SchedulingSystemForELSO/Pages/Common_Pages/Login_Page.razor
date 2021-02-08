@@ -1,0 +1,115 @@
+﻿@layout LoginLayout
+@page "/Login_Page"
+@using Models;
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@inject IToastService toastService
+<html>
+    <head>
+      <title>Sceduling System for ELSO| Login Page</title>
+      <link rel="stylesheet" href="css/StyleSheet1.css">
+
+    </head>
+    <body class="ab">
+
+        <div class="top-nav notification-row">
+            <div class="btn-group">
+                <button type="button" class="btn-group" @onclick="() => Help()">Help</button>
+                <button type="button" class="btn-group" @onclick="() => Login()">Login</button>
+                <button type="button" class="btn-group" @onclick="() => Register()">Register</button>
+
+            </div>
+        </div>
+
+
+       
+        <div class="loginBox">
+            <img src="icons/user1.png" class="user">
+            <h2>Log In Here</h2>
+            <form>
+                <p>Username</p>
+                <input Type="text" @bind="@Username" Placeholder="Username" />
+                <p>Password</p>
+                <input Type="password" @bind="@Password" Placeholder="Password" />
+                <button type="button" class="btn  btn-lg btn-block btn-dark" @onclick="() => Login()">&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;</button>
+
+                <a href="#"> Forget Password</a>
+
+            </form>
+        </div>
+    </body>
+</html>
+@code {
+    [Parameter]
+    public string Username { get; set; }
+    [Parameter]
+    public string Password { get; set; }
+    protected async Task Login()
+    {
+        if (!string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(Username))
+        {
+            SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+            var user = db.LoginTable.Where(p => p.Username == Username).FirstOrDefault();
+            if (user != null)
+            {
+
+                if (user.UserChoice == "Admin")
+                {
+                    if (user.Password == Password)
+                    {
+                        var url = "/Admin_Home_Page/" + user.Username;
+                        navigationManager.NavigateTo(url);
+                    }
+                    else
+                    {
+                        toastService.ShowError("WRONG PASSWORD");
+                    }
+                }
+                else if (user.UserChoice == "Student")
+                {
+                    user.Password = EncryptionDecryption.Decrypt(user.Password);
+                    if(user.Password == Password)
+                    {
+                        var url = "/Student_Home_Page/" + user.Username;
+                        navigationManager.NavigateTo(url);
+                    }
+                    else
+                    {
+                        toastService.ShowError("WRONG PASSWORD");
+                    }
+                }
+                else if (user.UserChoice == "Teacher")
+                {
+                    if (user.Password == Password)
+                    {
+                        var url = "/Teacher_Home_Page/" + user.Username;
+                        navigationManager.NavigateTo(url);
+                    }
+                    else
+                    {
+                        toastService.ShowError("WRONG PASSWORD");
+                    }
+                }
+            }
+            else
+            {
+                toastService.ShowError("WRONG Username.");
+            }
+        }
+        else
+        {
+
+        }
+    }
+    protected async Task Register()
+    {
+        navigationManager.NavigateTo("/Register_Page");
+    }
+    protected async Task Help()
+    {
+        navigationManager.NavigateTo("/");
+    }
+    protected async Task Loginn()
+    {
+
+    }
+}

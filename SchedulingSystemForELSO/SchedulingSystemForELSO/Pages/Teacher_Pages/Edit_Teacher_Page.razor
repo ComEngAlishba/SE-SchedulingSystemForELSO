@@ -1,0 +1,105 @@
+﻿@layout LoginLayout
+@page "/Edit_Teacher_Page/{Username}"
+@using Models;
+@inject IToastService toastService
+@inject NavigationManager navigationManager
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- Font-->
+    <link rel="stylesheet" type="text/css" href="css/montserrat-font.css">
+    <link rel="stylesheet" type="text/css" href="fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+    <!-- Main Style Css -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>Sceduling System for ELSO| My Profile</title>
+</head>
+<body class="form-v10">
+    <span><button style="float:left " type="button" class="btn  btn-lg  btn-dark" @onclick="() => Back()">&nbsp;Back &nbsp;&nbsp;&nbsp;</button> </span><span><h2 style="color:white; text-align:center">My Profile</h2></span>
+    <img src="../icons/images.jpg" style="width:400px; height:200px; margin-top:30px; display:block; margin-left:auto; margin-right:auto" />
+    <div class="page-content">
+
+        <form class="bl" action="#" method="post" id="myform">
+
+            <div class="form-left">
+                <div class="block">
+                    <label> Full Name:</label>
+                    <input type="text" @bind="@view_user.FullName" placeholder="First Name" required>
+                </div>
+                <div name="Email Address:" class="block">
+                    <label>Email:</label>
+                    <input type="text" size="20" name="Email Address" @bind="@view_user.Email" placeholder="Email Address" required />
+                </div>
+                <div class="block">
+                    <label>Contact:</label>
+                    <input type="text" name="phone" @bind="@view_user.ContactNumber" class="phone" id="phone" placeholder="Phone Number" required>
+                </div>
+                <div class="block">
+                    <label>Username:</label>
+                    <input type="text" name="username" id="username" @bind="@view_user.Username" class="input-text" required placeholder="Your Email">
+                </div>
+                <div name="Password" class="block">
+                    <label>Password:</label>
+                    <input type="text" name="Password" @bind="@view_user.Password" placeholder="Password" required />
+                </div>
+            </div>
+            <br>
+            &nbsp;
+            &nbsp;
+            <button style="float:right " type="button" class="btn  btn-lg  btn-dark" @onclick="()=>Save()">Save</button>
+        </form>
+    </div>
+</body>
+</html>
+
+@code {
+    [Parameter]
+    public string Username { get; set; }
+    TeacherTable view_user = new TeacherTable();
+    TeacherTable user = new TeacherTable();
+    protected override async Task OnInitializedAsync()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        user = db.TeacherTable.Where(p => p.Username == Username).FirstOrDefault();
+        view_user = user;
+    }
+    public void Save()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        var u = db.TeacherTable.Where(p => p.Username == Username).FirstOrDefault();
+        u.FullName = view_user.FullName;
+        u.Email = view_user.Email;
+        u.Username = view_user.Username;
+        u.Password = view_user.Password;
+        u.ContactNumber = view_user.ContactNumber;
+        db.SaveChanges();
+        var log_user = db.LoginTable.Where(p => p.Username == Username).FirstOrDefault();
+        log_user.Username = view_user.Username;
+        log_user.Password = view_user.Password;
+        db.SaveChanges();
+        var meetings = db.TimeSlotsTable.Where(b => b.TeacherUsername == Username).ToList();
+        for (int i = 0; i < meetings.Count; i++)
+        {
+            meetings[i].TeacherUsername = view_user.Username;
+            db.SaveChanges();
+        }
+        var edit_meetings = db.RescheduleDeleteTable.Where(b => b.TeacherUsername == Username).ToList();
+        for (int i = 0; i < edit_meetings.Count; i++)
+        {
+            edit_meetings[i].TeacherUsername = view_user.Username;
+            db.SaveChanges();
+        }
+        db.SaveChanges();
+        toastService.ShowSuccess("Saved..");
+    }
+    void Back()
+    {
+
+        navigationManager.NavigateTo("/My_Profile_Teacher_Page/" + view_user.Username);
+
+    }
+}
+

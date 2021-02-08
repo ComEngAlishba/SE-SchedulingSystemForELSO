@@ -1,0 +1,385 @@
+﻿body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.header {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 1002;
+}
+
+.header, .footer {
+    min-height: 60px;
+    padding: 0 15px;
+}
+
+.toggle-nav {
+    float: left;
+    padding-right: 15px;
+    margin-top: 20px;
+}
+/*
+ CSS for the main interaction
+*/
+.accordion > input[type="checkbox"] {
+    position: absolute;
+    left: -100vw;
+}
+
+.accordion .content {
+    overflow-y: hidden;
+    height: 0;
+    transition: height 0.3s ease;
+    background-color: #03072C;
+    color: white;
+}
+
+.accordion > input[type="checkbox"]:checked ~ .content {
+    height: auto;
+    overflow: visible;
+}
+
+.accordion label {
+    display: block;
+}
+
+/*
+ Styling
+*/
+body {
+    font: 16px/1.5em "Overpass", "Open Sans", Helvetica, sans-serif;
+    color: black;
+    font-weight: 300;
+}
+
+.accordion {
+    margin-bottom: 0em;
+}
+
+    .accordion > input[type="checkbox"]:checked ~ .content {
+        padding: 15px;
+        border: 1px solid #e8e8e8;
+        border-top: 0;
+    }
+
+    .accordion .handle {
+        margin: 0;
+        font-size: 1.125em;
+        line-height: 1.2em;
+    }
+
+    .accordion label {
+        color: #333;
+        cursor: pointer;
+        font-weight: normal;
+        padding: 15px;
+        background: #e8e8e8;
+    }
+
+        .accordion label:hover,
+        .accordion label:focus {
+            background: #d8d8d8;
+        }
+
+    .accordion .handle label:before {
+        font-family: 'fontawesome';
+        content: "\f054";
+        display: inline-block;
+        margin-right: 10px;
+        font-size: .58em;
+        line-height: 1.556em;
+        vertical-align: middle;
+    }
+
+    .accordion > input[type="checkbox"]:checked ~ .handle label:before {
+        content: "\f078";
+    }
+
+
+/*
+ Demo purposes only
+*/
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+
+
+a {
+    color: #06c;
+}
+
+p {
+    margin: 0 0 1em;
+}
+
+h1 {
+    margin: 0 0 1.5em;
+    font-weight: 600;
+    font-size: 1.5em;
+}
+
+.accordion {
+    max-width: 65em;
+}
+
+    .accordion p:last-child {
+        margin-bottom: 0;
+    }
+
+
+
+toggle-nav .icon-reorder {
+        cursor: pointer;
+        display: inline-block;
+        font-size: 20px;
+}
+
+a.logo {
+    font-size: 22px;
+    font-weight: 300;
+    color: #ff5733;
+    float: left;
+    margin-top: 15px;
+    text-transform: uppercase;
+}
+
+
+
+a.logo:hover, a.logo:focus 
+{
+        text-decoration: none;
+        outline: none;
+}
+
+ a.logo span {
+        color: #688a7e;
+    }
+
+.lite {
+    color: #688a7e !important;
+}
+
+.notification-row {
+    float: right;
+    margin-top: 15px;
+    margin-left: 65px;
+}
+
+.top-nav {
+    margin-top: 7px;
+}
+
+
+
+    .top-nav ul.top-menu > li .dropdown-menu.logout {
+        width: 200px !important;
+    }
+
+
+
+    .top-nav li.dropdown .dropdown-menu {
+        float: right;
+        right: 0;
+        left: auto;
+    }
+.bg-q {
+    /* The image used */
+    background-image: url("../icons/wall-clock.jpg");
+    /* Full height */
+    height: 100%;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color:#232121;
+}
+
+frxrxzcxgee13
+
+/* Container holding the image and the text */
+.container {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+/* Bottom left text */
+.bottom-left {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+}
+
+/* Top left text */
+.top-left {
+    position: absolute;
+    top: 50px;
+    left: 55px;
+    color: #fff;
+}
+
+/* Top right text */
+.top-right {
+    position: absolute;
+    top: 66px;
+    right: 36px;
+}
+
+a {
+    text-decoration: none;
+    color: #688a7e;
+}
+
+/* Bottom right text */
+.bottom-right {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+}
+
+/* Centered text */
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.text-block {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: #1EB3CD;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+}
+
+.active, .accordion:hover
+{
+        background-color: #ccc;
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+}
+
+sup {
+    text-shadow: 1px 1px 1px rgba(53,73,94,0.8);
+}
+
+.collapse-wrapper {
+    border-bottom: 1px solid transparent;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+.label-toggle {
+    background-color: rgb(65,184,131);
+    border-radius: 4px;
+    color: rgb(53,73,94);
+    cursor: pointer;
+    display: block;
+    font-weight: 600;
+    font-family: Arial, sans-serif;
+    padding: 1rem;
+    text-align: center;
+    transition: background-color 0.45s ease;
+    user-select: none;
+}
+
+    .label-toggle:hover {
+        background-color: rgb(65,184,124);
+    }
+    /* A little triangle */
+    .label-toggle::before {
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+        border-left: 4px solid currentColor;
+        content: '';
+        display: inline-block;
+        margin: 0 0.4em 0.1em 0;
+        transform: translateY(-2px);
+        -webkit-transform: translateY(-2px);
+        transition: transform 0.2s ease;
+        vertical-align: middle;
+    }
+
+.toggle:checked + .label-toggle::before {
+    transform: rotate(90deg) translateX(-3px);
+    -webkit-transform: rotate(90deg) translateX(-3px);
+}
+
+.collapse-inner {
+    background-color: #C7F3AF; /* fallback background-color */
+    background-color: #C7F3AF;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    color: rgb(53,73,94); /*Test Color*/
+    font-family: 'Droid Sans Mono', monospace;
+    padding: 0.1rem 0.3rem;
+    text-align: center;
+}
+
+.collapse-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.55s ease;
+}
+
+.toggle:checked + .label-toggle + .collapse-content {
+    max-height: 280px;
+}
+
+.toggle:checked + .label-toggle {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.btn-group button {
+    background-color: transparent; /* Green background */
+    border: transparent; /* Green border */
+    color: white;
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+    font-family: "Copperplate", Fantasy;
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+    background-color: #BDBDBD;
+}
+

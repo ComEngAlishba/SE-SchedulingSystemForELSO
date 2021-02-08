@@ -1,0 +1,192 @@
+﻿@layout LoginLayout
+@page "/My_Meeting_Teacher_Page/{Teacher_Username}"
+@inject NavigationManager navigationManager
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Grids
+@using Models
+@inject IToastService toastService
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Sceduling System for ELSO| My Meeting</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+
+   
+</head>
+
+<body>
+
+    <!-- container section start -->
+    <section id="container" class="">
+        <!--header start-->
+        <header class="header dark-heading-bg">
+            <div class="toggle-nav">
+                <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><img src="icons/task.png"></div>
+            </div>
+
+            <!--logo start-->
+            <a href="" class="logo"><b>Scheduling System <span class="lite">ELSO</span></b></a>
+            <!--logo end-->
+
+            <div class="top-nav notification-row">
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" href="#">
+                            <span class="profile-ava">
+                                <img alt="" src="icons/user.png"><!--profile pic from the -database if any otherwise set any defaul -->
+                            </span>
+                            <span class="username">@Teacher_Username</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li class="eborder-top">
+                                <a href="/My_Profile_Teacher_Page/@Teacher_Username"><i class="icon_profile"></i> My Profile</a>
+                            </li>
+                            <li>
+                                <a href="/"><i class="icon_key_alt"></i> Log Out</a><!--navigate to login page-->
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+        </header>
+        <!--header end-->
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar" class="nav-collapse">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu">
+                    <li class="">
+                        <a class="" href="/Teacher_Home_Page/@Teacher_Username">
+                            <!--navigate to Home page-->
+                            <i class="icon_house_alt"></i>
+                            <span>Home Page</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Arrange_Time_Slots_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Create Meeting</span>
+
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="" href="/Send_Annoucment_Page/@Teacher_Username">
+                            <!--navigate to inbox  -->
+                            <i class="icon_piechart"></i>
+                            <span>Send Annoucments</span>
+
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="" href="/Received_Meeting_Requests/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Meeting Requests</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a class="" href="/My_Meeting_Teacher_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>My Meetings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Reschedule_Meetings_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Reschedule Meetings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/Cancel_Meeting_Page/@Teacher_Username">
+                            <i class="icon_piechart"></i>
+                            <span>Cancel Meetings</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="/Notification_Page/@Teacher_Username">
+                            <i><img src="icons/bell.png"></i>
+                            <span>Notification</span>
+                            <span class="badge bg-important">@notification_numbers</span><!--total number of notifications-->
+                        </a>
+                    </li>
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+
+        <section id="main-content">
+            <section class="wrapper">
+                <header>
+                    <h1 class="text-center pr-5">
+                        My Meetings
+                    </h1>
+                </header>
+                <SfGrid DataSource="@timeslots">
+                    <GridColumns>
+                        <GridColumn Field=@nameof(TimeSlotsTable.Id) HeaderText="Meeting Id" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                        <GridColumn Field=@nameof(TimeSlotsTable.MeetingTopic) HeaderText="Meeting Topic" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                        <GridColumn Field=@nameof(TimeSlotsTable.StartTime) HeaderText="Start Time" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Left" Width="120"></GridColumn>
+                        <GridColumn Field=@nameof(TimeSlotsTable.EndTime) HeaderText="End Time" Width="150"></GridColumn>
+                        <GridColumn HeaderText="Students" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120">
+                            <Template>
+                                @{
+                                    var m = (context as TimeSlotsTable);
+                                    <a class="btn btn-success" @onclick="() => View_Meeting(m.Id)">View</a>
+                                }
+                            </Template>
+                        </GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            </section>
+        </section>
+    </section>
+    <!-- container section end -->
+</body>
+
+</html>
+
+
+@code {
+    [Parameter]
+    public string Teacher_Username { get; set; }
+    public int notification_numbers { get; set; }
+
+    List<TimeSlotsTable> timeslots;
+    protected override async Task OnInitializedAsync()
+    {
+        SchedulingSystemForELSOContext db = new SchedulingSystemForELSOContext();
+        timeslots = db.TimeSlotsTable.Where(t=>t.TeacherUsername==Teacher_Username && t.Request==true).ToList();
+        notification_numbers = db.NotificationTable.Where(t => t.Username == Teacher_Username).ToList().Count;
+    }
+    void View_Meeting(int id)
+    {
+        var url = "/View_Students/" + id.ToString()+"/"+Teacher_Username;
+        navigationManager.NavigateTo(url);
+    }
+}

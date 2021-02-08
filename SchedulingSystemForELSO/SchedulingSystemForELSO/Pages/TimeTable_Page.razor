@@ -1,0 +1,147 @@
+﻿@layout LoginLayout
+@page "/TimeTable_Page"
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+        <meta name="author" content="GeeksLabs">
+        <link rel="shortcut icon" href="img/favicon.png">
+
+        <title>Sceduling System for ELSO</title>
+
+        <!-- Bootstrap CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <!-- bootstrap theme -->
+        <link href="css/bootstrap-theme.css" rel="stylesheet">
+        <!--external css-->
+        <!-- font icon -->
+        <link href="css/elegant-icons-style.css" rel="stylesheet" />
+        <link href="css/font-awesome.min.css" rel="stylesheet" />
+        <!-- Custom styles -->
+        <link href="css/style.css" rel="stylesheet">
+        <link href="css/style-responsive.css" rel="stylesheet" />
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
+        <!--[if lt IE 9]>
+            <script src="js/html5shiv.js"></script>
+            <script src="js/respond.min.js"></script>
+            <script src="js/lte-ie7.js"></script>
+          <![endif]-->
+        <!-- =======================================================
+          Theme Name: NiceAdmin
+          Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+          Author: BootstrapMade
+          Author URL: https://bootstrapmade.com
+        ======================================================= -->
+    </head>
+
+    <body>
+
+        <!-- container section start -->
+        <section id="container" class="">
+            <!--header start-->
+            <header class="header dark-heading-bg">
+                <div class="toggle-nav">
+                    <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><img src="icons/task.png"></div>
+                </div>
+
+                <!--logo start-->
+                <a href="" class="logo"><b>Scheduling System <span class="lite">ELSO</span></b></a>
+                <!--logo end-->
+
+                <div class="top-nav notification-row">
+                    <!-- notificatoin dropdown start-->
+                    <ul class="nav pull-right top-menu">
+    
+                        <!-- user login dropdown start-->
+                        <li class="dropdown">
+                            <a data-toggle="dropdown"  href="#">
+                                <span class="profile-ava">
+                                    <img alt="" src="icons/user.png"><!--profile pic from the -database if any otherwise set any defaul -->
+                                </span>
+                                <span class="username">Hadia Noor</span>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu extended logout">
+                                <div class="log-arrow-up"></div>
+                                <li class="eborder-top">
+                                    <a href="/MyProfile"><i class="icon_profile"></i> My Profile</a>
+                                </li>
+                                <li>
+                                    <a href=""><i class="icon_key_alt"></i> Log Out</a><!--navigate to login page-->
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- user login dropdown end -->
+                    </ul>
+                    <!-- notificatoin dropdown end-->
+                </div>
+            </header>
+            <!--header end-->
+            <!--sidebar start-->
+            <aside>
+                <div id="sidebar" class="nav-collapse">
+                    <!-- sidebar menu start-->
+                    <ul class="sidebar-menu">
+                        <li>
+                            <a class="" href="/Home_Page">
+                                <!--navigate to Home page-->
+                                <i class="icon_house_alt"></i>
+                                <span>Home Page</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a class="" href="/TimeTable_Page">
+                                <i class="icon_piechart"></i>
+                                <span>My Time Table</span>
+
+                            </a>
+
+                        </li>
+                        <li>
+                            <a class="" href="/Inbox">
+                                <!--navigate to inbox  -->
+                                <i class="icon_piechart"></i>
+                                <span>Inbox</span>
+
+                            </a>
+
+                        </li>
+                        <li>
+                            <a class="" href="/Notification_Page">
+                                <i class="icon_piechart"></i>
+                                <span>Notifications</span>
+
+                            </a>
+
+                        </li>
+                    </ul>
+                    <!-- sidebar menu end-->
+                </div>
+            </aside>
+            <!--sidebar end-->
+
+            <div class="text-right">
+                <div class="credits">
+                    <!--
+                      All the links in the footer should remain intact.
+                      You can delete the links only if you purchased the pro version.
+                      Licensing information: https://bootstrapmade.com/license/
+                      Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+                    -->
+                    Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                </div>
+            </div>
+        </section>
+        <!-- container section end -->
+    </body>
+
+</html>
+
+
+@code {
+
+}

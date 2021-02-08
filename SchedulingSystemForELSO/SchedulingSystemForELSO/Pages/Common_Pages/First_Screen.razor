@@ -1,0 +1,162 @@
+﻿@layout LoginLayout
+@page "/"
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+<html>
+<head>
+    <link href="css/StyleSheet.css" rel="stylesheet">
+    <title>Sceduling System for ELSO| HomePage</title>
+</head>
+<body class="bg-q">
+    <header class="header dark-heading-bg"  style="background-image: url('../icons/background.jpg');">
+
+
+        <!--logo start-->
+        <a href="" class="logo"><b>Scheduling System <span class="lite">ELSO</span></b></a>
+        <!--logo end-->
+
+        <div class="top-nav notification-row">
+            <div class="btn-group">
+                <button type="button" class="btn-group" @onclick="() => Help()">Help</button>
+                <button type="button" class="btn-group" @onclick="() => Login()">Login</button>
+                <button type="button" class="btn-group" @onclick="() => Register()">Register</button>
+
+            </div>
+        </div>
+
+    </header>
+
+    <!--Main content-->
+    <section>
+
+        <div class="top-left">
+            <br />
+            <br />
+            <h1 style="color:white">Teacher Helping Guide</h1>
+
+            <div class="collapse-wrapper">
+                <input id="collapsable" class="toggle" type="checkbox">
+                <label for="collapsable" class="label-toggle">How to Arrange a Meeting?</label>
+                <div class="collapse-content">
+                    <div class="collapse-inner">
+                        <p><p>1.After Logging in, Click on the "Create Meetings" Button on the left Sidebar"</p>
+                        <p>2.Select the Start Time and Date.</p>
+                        <p>3.Select the End Time and Date.</p>
+                        <p>4.Write the Meeting Topic.</p>
+                        <p>5.Click the "Send Request" Button</p>
+                        <p>6.Meeting will be arranged after the administrator accept that request.</p></p>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse-wrapper">
+                <input id="collapsable2" class="toggle" type="checkbox">
+                <label for="collapsable2" class="label-toggle">How to View your Meetings</label>
+                <div class="collapse-content">
+                    <div class="collapse-inner">
+                        <p>1.After Logging in, Click on the "My Meetings" Button on the left Sidebar</p>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse-wrapper">
+                <input id="collapsable3" class="toggle" type="checkbox">
+                <label for="collapsable3" class="label-toggle">How to Send an Announcement?</label>
+                <div class="collapse-content">
+                    <div class="collapse-inner">
+                        <p>1.After Logging in, Click on the "Send Announcements" Button on the left Sidebar.</p>
+                        <p>2.Select a Meeting.</p>
+                        <p>3.Enter the Subject.</p>
+                        <p>4.Enter the Message.</p>
+                        <p>5.Click the "Send" Button.</p>
+                        <p>6.The Message will be sent to the Students enrolled in the selected Meeting.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse-wrapper">
+                <input id="collapsable8" class="toggle" type="checkbox">
+                <label for="collapsable8" class="label-toggle">How to Add students in your Meeting?</label>
+                <div class="collapse-content">
+                    <div class="collapse-inner">
+                        <p>1.Click on the "Meeting Requests" Button on the left Sidebar.</p>
+                        <p>2.Select a Meeting.</p>
+                        <p>3.Enter the Subject.</p>
+                        <p>4.Enter the Message.</p>
+                        <p>5.Click the "Send" Button.</p>
+                        <p>6.The Message will be sent to the Students enrolled in the selected Meeting.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse-wrapper">
+                <input id="collapsable7" class="toggle" type="checkbox">
+                <label for="collapsable7" class="label-toggle">How to Cancel a Meeting?</label>
+                <div class="collapse-content">
+                    <div class="collapse-inner">
+                        <p><p>1.After Logging in, Click on the "Cancel Meetings" Button on the left Sidebar"</p>
+                        <p>2.Select the Meeting name that you want to cancel.</p>
+                        <p>3.Click the "Cancel" Button</p>
+                        <p>4.Meeting will be cancelled after the administrator accept that request.</p></p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div>
+                <br />
+                <br />
+                <h1>Student Helping Guide</h1>
+
+
+                <div class="collapse-wrapper">
+                    <input id="collapsable4" class="toggle" type="checkbox">
+                    <label for="collapsable4" class="label-toggle">How to Register?</label>
+                    <div class="collapse-content">
+                        <div class="collapse-inner">
+                            <p>1.Click on the Login Button on the Top Right of this Screen.</p>
+                            <p>2.Click on the Register Button at the Bottom of the Login Page.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse-wrapper">
+                    <input id="collapsable5" class="toggle" type="checkbox">
+                    <label for="collapsable5" class="label-toggle">How to View your Meetings</label>
+                    <div class="collapse-content">
+                        <div class="collapse-inner">
+                            <p>1.After Logging in, Click on the "My Meetings" Button on the left Sidebar</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse-wrapper">
+                    <input id="collapsable6" class="toggle" type="checkbox">
+                    <label for="collapsable6" class="label-toggle">How to Request for Joining a Meeting?</label>
+                    <div class="collapse-content">
+                        <div class="collapse-inner">
+                            <p>1.After Logging in, Click on the "Select a Meeting" Button on the left Sidebar.</p>
+                            <p>2.There will be a list of the available meetings on this Page.</p>
+                            <p>3.Click "View" Button of the Meeting you want to Request.</p>
+                            <p>4.There will be a Page Named "Meeting Details".</p>
+                            <p>5.Read the /details of the Meeting Carefully and Press the "Send" Button.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+</body>
+</html>
+
+
+@code {
+
+    protected async Task Login()
+    {
+        navigationManager.NavigateTo("/Login_Page");
+    }
+    protected async Task Register()
+    {
+        navigationManager.NavigateTo("/Register_Page");
+    }
+    protected async Task Help()
+    {
+        
+    }
+}
